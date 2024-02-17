@@ -20,19 +20,28 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="原因之前用的jekyll，恕我能力不足，扩展实在麻烦，加上换手机的时候没转移二次认证（然后那时候也换电脑），之前复原码也存的乱七八糟找不着了，干脆换一个账户，也换成hexo，早就看上这漂亮的Next主题和tag功能了，让我洗心革面！ 为啥隔了这么久很简单，中考，然后那段时间也忘了这茬，换新电脑以后有上高中了，一直没时间弄 以前的blog？我会开一个单独的blog，全部整合到那个里面，现在来看有很多">
+  <meta name="description" content="目录 找到health  找到对象（-0x58偏移的那个）  找到伤害源头：mov [rdi+58], rax  找出指令访问的地址  找出其中玩家和enemy的一些地址，因为八字节指针所以偏了4byte，用+4-58找出对象指针  定义结构并找不同（注意一点血的敌人特判不攻击，都是一些触发器和景物）  写代码   步骤  注意有一个值无法改动一直被刷新，另一个值改动会连带其改动，即选取那个值">
 <meta property="og:type" content="article">
-<meta property="og:title" content="新的博客！">
-<meta property="og:url" content="http://example.com/2024/01/29/%E6%96%B0%E7%9A%84%E5%8D%9A%E5%AE%A2%EF%BC%81/index.html">
+<meta property="og:title" content="用cheat engine为苍翼混沌效应实现god mod">
+<meta property="og:url" content="http://example.com/2024/02/17/%E7%94%A8cheat-engine%E4%B8%BA%E8%8B%8D%E7%BF%BC%E6%B7%B7%E6%B2%8C%E6%95%88%E5%BA%94%E5%AE%9E%E7%8E%B0god-mod/index.html">
 <meta property="og:site_name" content="AlohaHenry&#39;s Blog">
-<meta property="og:description" content="原因之前用的jekyll，恕我能力不足，扩展实在麻烦，加上换手机的时候没转移二次认证（然后那时候也换电脑），之前复原码也存的乱七八糟找不着了，干脆换一个账户，也换成hexo，早就看上这漂亮的Next主题和tag功能了，让我洗心革面！ 为啥隔了这么久很简单，中考，然后那段时间也忘了这茬，换新电脑以后有上高中了，一直没时间弄 以前的blog？我会开一个单独的blog，全部整合到那个里面，现在来看有很多">
+<meta property="og:description" content="目录 找到health  找到对象（-0x58偏移的那个）  找到伤害源头：mov [rdi+58], rax  找出指令访问的地址  找出其中玩家和enemy的一些地址，因为八字节指针所以偏了4byte，用+4-58找出对象指针  定义结构并找不同（注意一点血的敌人特判不攻击，都是一些触发器和景物）  写代码   步骤  注意有一个值无法改动一直被刷新，另一个值改动会连带其改动，即选取那个值">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2024-01-29T14:36:49.000Z">
-<meta property="article:modified_time" content="2024-01-29T14:42:45.284Z">
+<meta property="og:image" content="http://example.com/2024/02/17/%E7%94%A8cheat-engine%E4%B8%BA%E8%8B%8D%E7%BF%BC%E6%B7%B7%E6%B2%8C%E6%95%88%E5%BA%94%E5%AE%9E%E7%8E%B0god-mod/1.png">
+<meta property="og:image" content="http://example.com/2024/02/17/%E7%94%A8cheat-engine%E4%B8%BA%E8%8B%8D%E7%BF%BC%E6%B7%B7%E6%B2%8C%E6%95%88%E5%BA%94%E5%AE%9E%E7%8E%B0god-mod/2.png">
+<meta property="og:image" content="http://example.com/2024/02/17/%E7%94%A8cheat-engine%E4%B8%BA%E8%8B%8D%E7%BF%BC%E6%B7%B7%E6%B2%8C%E6%95%88%E5%BA%94%E5%AE%9E%E7%8E%B0god-mod/3.png">
+<meta property="og:image" content="http://example.com/2024/02/17/%E7%94%A8cheat-engine%E4%B8%BA%E8%8B%8D%E7%BF%BC%E6%B7%B7%E6%B2%8C%E6%95%88%E5%BA%94%E5%AE%9E%E7%8E%B0god-mod/4.png">
+<meta property="og:image" content="http://example.com/2024/02/17/%E7%94%A8cheat-engine%E4%B8%BA%E8%8B%8D%E7%BF%BC%E6%B7%B7%E6%B2%8C%E6%95%88%E5%BA%94%E5%AE%9E%E7%8E%B0god-mod/5-1.png">
+<meta property="og:image" content="http://example.com/2024/02/17/%E7%94%A8cheat-engine%E4%B8%BA%E8%8B%8D%E7%BF%BC%E6%B7%B7%E6%B2%8C%E6%95%88%E5%BA%94%E5%AE%9E%E7%8E%B0god-mod/6.png">
+<meta property="og:image" content="http://example.com/2024/02/17/%E7%94%A8cheat-engine%E4%B8%BA%E8%8B%8D%E7%BF%BC%E6%B7%B7%E6%B2%8C%E6%95%88%E5%BA%94%E5%AE%9E%E7%8E%B0god-mod/6-2.png">
+<meta property="og:image" content="http://example.com/2024/02/17/%E7%94%A8cheat-engine%E4%B8%BA%E8%8B%8D%E7%BF%BC%E6%B7%B7%E6%B2%8C%E6%95%88%E5%BA%94%E5%AE%9E%E7%8E%B0god-mod/7.png">
+<meta property="article:published_time" content="2024-02-17T09:04:49.000Z">
+<meta property="article:modified_time" content="2024-02-17T09:47:22.654Z">
 <meta property="article:author" content="AlohaHenry">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2024/02/17/%E7%94%A8cheat-engine%E4%B8%BA%E8%8B%8D%E7%BF%BC%E6%B7%B7%E6%B2%8C%E6%95%88%E5%BA%94%E5%AE%9E%E7%8E%B0god-mod/1.png">
 
-<link rel="canonical" href="http://example.com/2024/01/29/%E6%96%B0%E7%9A%84%E5%8D%9A%E5%AE%A2%EF%BC%81/">
+<link rel="canonical" href="http://example.com/2024/02/17/%E7%94%A8cheat-engine%E4%B8%BA%E8%8B%8D%E7%BF%BC%E6%B7%B7%E6%B2%8C%E6%95%88%E5%BA%94%E5%AE%9E%E7%8E%B0god-mod/">
 
 
 <script id="page-configurations">
@@ -45,7 +54,7 @@
   };
 </script>
 
-  <title>新的博客！ | AlohaHenry's Blog</title>
+  <title>用cheat engine为苍翼混沌效应实现god mod | AlohaHenry's Blog</title>
   
 
 
@@ -150,7 +159,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/01/29/%E6%96%B0%E7%9A%84%E5%8D%9A%E5%AE%A2%EF%BC%81/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/02/17/%E7%94%A8cheat-engine%E4%B8%BA%E8%8B%8D%E7%BF%BC%E6%B7%B7%E6%B2%8C%E6%95%88%E5%BA%94%E5%AE%9E%E7%8E%B0god-mod/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -163,7 +172,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          新的博客！
+          用cheat engine为苍翼混沌效应实现god mod
         </h1>
 
         <div class="post-meta">
@@ -174,7 +183,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2024-01-29 22:36:49 / Modified: 22:42:45" itemprop="dateCreated datePublished" datetime="2024-01-29T22:36:49+08:00">2024-01-29</time>
+              <time title="Created: 2024-02-17 17:04:49 / Modified: 17:47:22" itemprop="dateCreated datePublished" datetime="2024-02-17T17:04:49+08:00">2024-02-17</time>
             </span>
 
           
@@ -188,9 +197,51 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><p>之前用的jekyll，恕我能力不足，扩展实在麻烦，加上换手机的时候没转移二次认证（然后那时候也换电脑），之前复原码也存的乱七八糟找不着了，干脆换一个账户，也换成hexo，早就看上这漂亮的Next主题和tag功能了，让我洗心革面！</p>
-<h3 id="为啥隔了这么久"><a href="#为啥隔了这么久" class="headerlink" title="为啥隔了这么久"></a>为啥隔了这么久</h3><p>很简单，中考，然后那段时间也忘了这茬，换新电脑以后有上高中了，一直没时间弄</p>
-<h3 id="以前的blog？"><a href="#以前的blog？" class="headerlink" title="以前的blog？"></a>以前的blog？</h3><p>我会开一个单独的blog，全部整合到那个里面，现在来看有很多可惜没记录的文章，也有些黑历史，不过都会放上来的</p>
+        <h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ol>
+<li><p>找到health</p>
+</li>
+<li><p>找到对象（-0x58偏移的那个）</p>
+</li>
+<li><p>找到伤害源头：mov [rdi+58], rax</p>
+</li>
+<li><p>找出指令访问的地址</p>
+</li>
+<li><p>找出其中玩家和enemy的一些地址，因为八字节指针所以偏了4byte，用+4-58找出对象指针</p>
+</li>
+<li><p>定义结构并找不同（注意一点血的敌人特判不攻击，都是一些触发器和景物）</p>
+</li>
+<li><p>写代码</p>
+</li>
+</ol>
+<h2 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h2><p><img src="/2024/02/17/%E7%94%A8cheat-engine%E4%B8%BA%E8%8B%8D%E7%BF%BC%E6%B7%B7%E6%B2%8C%E6%95%88%E5%BA%94%E5%AE%9E%E7%8E%B0god-mod/1.png" alt="1"></p>
+<ol>
+<li>注意有一个值无法改动一直被刷新，另一个值改动会连带其改动，即选取那个值</li>
+</ol>
+<p><img src="/2024/02/17/%E7%94%A8cheat-engine%E4%B8%BA%E8%8B%8D%E7%BF%BC%E6%B7%B7%E6%B2%8C%E6%95%88%E5%BA%94%E5%AE%9E%E7%8E%B0god-mod/2.png" alt="2"></p>
+<ol start="2">
+<li>用<code>是什么访问了这个地址</code>查找这个struct的起始指针（注意指针是4&#x2F;8位的）</li>
+</ol>
+<p><img src="/2024/02/17/%E7%94%A8cheat-engine%E4%B8%BA%E8%8B%8D%E7%BF%BC%E6%B7%B7%E6%B2%8C%E6%95%88%E5%BA%94%E5%AE%9E%E7%8E%B0god-mod/3.png" alt="3"></p>
+<ol start="3">
+<li>用<code>是什么改写了这个地址</code>查找我们要修改的语句，有两个，发现离的很近，选择<code>显示反汇编程序</code>，可以发现地址较大的那句话会被test al,al跳过，直接用另一个就好</li>
+</ol>
+<p><img src="/2024/02/17/%E7%94%A8cheat-engine%E4%B8%BA%E8%8B%8D%E7%BF%BC%E6%B7%B7%E6%B2%8C%E6%95%88%E5%BA%94%E5%AE%9E%E7%8E%B0god-mod/4.png" alt="4"></p>
+<ol start="4">
+<li>我分别找了几个敌人和自己的对象，方便确认不同点</li>
+</ol>
+<p><img src="/2024/02/17/%E7%94%A8cheat-engine%E4%B8%BA%E8%8B%8D%E7%BF%BC%E6%B7%B7%E6%B2%8C%E6%95%88%E5%BA%94%E5%AE%9E%E7%8E%B0god-mod/5-1.png" alt="5-1"></p>
+<ol start="5">
+<li>这里是将所有地址对齐，找到对象的起始地址（对所有第4步中找到的地址都进行同样操作）</li>
+</ol>
+<p><img src="/2024/02/17/%E7%94%A8cheat-engine%E4%B8%BA%E8%8B%8D%E7%BF%BC%E6%B7%B7%E6%B2%8C%E6%95%88%E5%BA%94%E5%AE%9E%E7%8E%B0god-mod/6.png" alt="6"></p>
+<p><img src="/2024/02/17/%E7%94%A8cheat-engine%E4%B8%BA%E8%8B%8D%E7%BF%BC%E6%B7%B7%E6%B2%8C%E6%95%88%E5%BA%94%E5%AE%9E%E7%8E%B0god-mod/6-2.png" alt="6-2"></p>
+<ol start="6">
+<li>如图，接下来找不同，最好有0&#x2F;1区别的</li>
+</ol>
+<p><img src="/2024/02/17/%E7%94%A8cheat-engine%E4%B8%BA%E8%8B%8D%E7%BF%BC%E6%B7%B7%E6%B2%8C%E6%95%88%E5%BA%94%E5%AE%9E%E7%8E%B0god-mod/7.png" alt="7"></p>
+<ol start="7">
+<li>写代码，如图</li>
+</ol>
 
     </div>
 
@@ -205,11 +256,11 @@
 
         
     <div class="post-nav">
-      <div class="post-nav-item"></div>
       <div class="post-nav-item">
-    <a href="/2024/01/29/%E6%97%A7blog%E6%95%B4%E5%90%88/" rel="next" title="旧blog整合">
-      旧blog整合 <i class="fa fa-chevron-right"></i>
+    <a href="/2024/02/03/%E5%86%8D%E4%B8%80%E6%AC%A1%E8%A3%85%E6%9C%BA/" rel="prev" title="再一次装机，aio服务器">
+      <i class="fa fa-chevron-left"></i> 再一次装机，aio服务器
     </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -268,7 +319,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E5%9B%A0"><span class="nav-number">1.</span> <span class="nav-text">原因</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BA%E5%95%A5%E9%9A%94%E4%BA%86%E8%BF%99%E4%B9%88%E4%B9%85"><span class="nav-number">2.</span> <span class="nav-text">为啥隔了这么久</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A5%E5%89%8D%E7%9A%84blog%EF%BC%9F"><span class="nav-number">3.</span> <span class="nav-text">以前的blog？</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%AE%E5%BD%95"><span class="nav-number">1.</span> <span class="nav-text">目录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%A5%E9%AA%A4"><span class="nav-number">2.</span> <span class="nav-text">步骤</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
