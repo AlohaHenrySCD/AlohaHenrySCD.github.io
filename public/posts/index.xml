@@ -6,8 +6,18 @@
     <description>Recent content in Posts on AlohaHenry&#39;s New Blog</description>
     <generator>Hugo</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Thu, 24 Sep 2026 11:08:14 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 24 Sep 2026 22:10:33 +0800</lastBuildDate>
     <atom:link href="https://newblog.alohahenry.top/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Clash Verge GUI崩坏修复</title>
+      <link>https://newblog.alohahenry.top/posts/clash-verge-fix/</link>
+      <pubDate>Thu, 24 Sep 2026 22:10:33 +0800</pubDate>
+      <guid>https://newblog.alohahenry.top/posts/clash-verge-fix/</guid>
+      <description>&lt;p&gt;如果遇到如图情况
+&lt;img alt=&#34;crush&#34; loading=&#34;lazy&#34; src=&#34;https://newblog.alohahenry.top/posts/clash-verge-fix/crush.png&#34;&gt;
+解决办法：编辑~/.local/share/io.github.clash-verge-rev.clash-verge-rev/verge.yaml 关掉静默启动enable_silent_start，然后重启电脑
+我的环境：nixos asahi-linux niri wayland&lt;/p&gt;</description>
+    </item>
     <item>
       <title>我的符号层设计</title>
       <link>https://newblog.alohahenry.top/posts/my-symbol-layer/</link>
