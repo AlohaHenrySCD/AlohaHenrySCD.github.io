@@ -11,5 +11,6 @@ title = '我的符号层设计'
 ![my symbol layer](mine.png)
 符号统计:
 ![symbol count](symbol-count.png)
+![symbol count all](symbol-count-all.png)
 ## Reference
 [Designing a Symbol Layer Pascal Getreuer, 2021-10-30](https://getreuer.info/posts/keyboards/symbol-layer/index.html)
