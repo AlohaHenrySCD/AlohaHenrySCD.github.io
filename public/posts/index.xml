@@ -15,11 +15,19 @@
       <guid>https://newblog.alohahenry.top/posts/my-symbol-layer/</guid>
       <description>&lt;p&gt;我在Pascal（见reference）的基础上以rust&amp;gt;py&amp;gt;c的优先级做了修改&lt;/p&gt;
 &lt;p&gt;并对.rs/.py/.c.h的符号使用做了统计&lt;/p&gt;
-&lt;p&gt;我的符号层:
-&lt;img alt=&#34;my symbol layer&#34; loading=&#34;lazy&#34; src=&#34;https://newblog.alohahenry.top/posts/my-symbol-layer/mine.png&#34;&gt;
+&lt;p&gt;我的符号层(l2):
+&lt;img alt=&#34;my symbol layer&#34; loading=&#34;lazy&#34; src=&#34;https://newblog.alohahenry.top/posts/my-symbol-layer/l2.png&#34;&gt;
+其他层:
+&lt;img alt=&#34;l1&#34; loading=&#34;lazy&#34; src=&#34;https://newblog.alohahenry.top/posts/my-symbol-layer/l1.png&#34;&gt;
+&lt;img alt=&#34;l3&#34; loading=&#34;lazy&#34; src=&#34;https://newblog.alohahenry.top/posts/my-symbol-layer/l3.png&#34;&gt;
+&lt;img alt=&#34;l4&#34; loading=&#34;lazy&#34; src=&#34;https://newblog.alohahenry.top/posts/my-symbol-layer/l4.png&#34;&gt;
+&lt;img alt=&#34;l5&#34; loading=&#34;lazy&#34; src=&#34;https://newblog.alohahenry.top/posts/my-symbol-layer/l5.png&#34;&gt;
 符号统计:
+用户目录:
 &lt;img alt=&#34;symbol count&#34; loading=&#34;lazy&#34; src=&#34;https://newblog.alohahenry.top/posts/my-symbol-layer/symbol-count.png&#34;&gt;
-&lt;img alt=&#34;symbol count all&#34; loading=&#34;lazy&#34; src=&#34;https://newblog.alohahenry.top/posts/my-symbol-layer/symbol-count-all.png&#34;&gt;&lt;/p&gt;
+全部:
+&lt;img alt=&#34;symbol count all&#34; loading=&#34;lazy&#34; src=&#34;https://newblog.alohahenry.top/posts/my-symbol-layer/symbol-count-all.png&#34;&gt;
+&lt;img alt=&#34;symbol count all ratio&#34; loading=&#34;lazy&#34; src=&#34;https://newblog.alohahenry.top/posts/my-symbol-layer/symbol-count-all-ratio.png&#34;&gt;&lt;/p&gt;
 &lt;h2 id=&#34;reference&#34;&gt;Reference&lt;/h2&gt;
 &lt;p&gt;&lt;a href=&#34;https://getreuer.info/posts/keyboards/symbol-layer/index.html&#34;&gt;Designing a Symbol Layer Pascal Getreuer, 2021-10-30&lt;/a&gt;&lt;/p&gt;</description>
     </item>
